@@ -1,0 +1,46 @@
+/.idea
+/vendor/
+.vscode/
+.DS_Store
+supervisord.log
+supervisord.pid
+.uniqueid.txt
+
+###> shopware/core ###
+.env.local
+.env.local.php
+.env.*.local
+.env.test
+/public/fonts/*
+!/public/fonts/.gitkeep
+/public/img/*
+!/public/img/.gitkeep
+/public/css/*
+!/public/css/.gitkeep
+/public/js/*
+!/public/js/.gitkeep
+/public/media/*
+!/public/media/.gitkeep
+/public/theme/*
+!/public/theme/.gitkeep
+/public/thumbnail/*
+!/public/thumbnail/.gitkeep
+/public/assets/*
+/public/sitemap/*
+!/public/sitemap/.gitkeep
+/public/bundles/*
+!/public/bundles/.gitkeep
+/files/*
+/var/*
+!/var/log/.gitkeep
+!/var/cache/.gitkeep
+/auth.json
+/install.lock
+public/asset-manifest.json
+###< shopware/core ###
+/docker/nginx/prod
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###

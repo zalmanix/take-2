@@ -1,0 +1,11 @@
+version: '3'
+services:
+  shopwaredemo-nginx:
+    volumes:
+      - ./docker/nginx/prod:/etc/nginx/conf.d
+      - ./:/var/www/html
+      - /etc/letsencrypt:/etc/nginx/ssl
+  shopwaredemo-web:
+    build:
+      args:
+        APP_ENV: "prod"

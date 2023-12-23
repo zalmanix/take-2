@@ -1,0 +1,78 @@
+version: '3'
+services:
+  shopwaredemo-nginx:
+    image: nginx:latest
+    container_name: shopwaredemo-nginx
+    restart: always
+    ports:
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - ./docker/nginx/dev:/etc/nginx/conf.d
+      - ./:/var/www/html
+      - /etc/letsencrypt:/etc/nginx/ssl
+    depends_on:
+      - shopwaredemo-web
+      - shopwaredemo-mysql
+    networks:
+      - shopwaredemo-network
+
+  shopwaredemo-web:
+    build:
+      context: .
+      dockerfile: ./docker/web/Dockerfile
+      args:
+        UID: "${UID}"
+        GID: "${GID}"
+        ALT_USER: "${ALT_USER}"
+    container_name: shopwaredemo-web
+    restart: always
+    volumes:
+      - ./:/var/www/html
+    user: "${UID}:${GID}"
+    networks:
+      - shopwaredemo-network
+
+  shopwaredemo-mysql:
+    image: mysql:8.0.25
+    container_name: shopwaredemo-mysql
+    restart: always
+    ports:
+      - "8306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: d1cbQ]zsÂG
+      MYSQL_DATABASE: shopwaredemo
+      MYSQL_USER: spears
+      MYSQL_PASSWORD: usy"5RI@)L
+    volumes:
+      - /var/lib/shopwaredemo-mysql:/var/lib/mysql
+    networks:
+      - shopwaredemo-network
+
+  shopwaredemo-elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+    container_name: shopwaredemo-elasticsearch
+    restart: always
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    networks:
+     - shopwaredemo-network
+
+  shopwaredemo-cli:
+    build:
+      context: .
+      dockerfile: ./docker/supervisor/Dockerfile
+    volumes:
+      - ./:/var/www/html
+      - ./docker/supervisor/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
+    user: "${UID}:${GID}"
+    networks:
+      - shopwaredemo-network
+    entrypoint:
+      - supervisord
+      - -c
+      - /etc/supervisor/conf.d/supervisord.conf     
+
+networks:
+  shopwaredemo-network:

@@ -1,0 +1,14 @@
+version: '3'
+services:
+  shopwaredemo-mysql:
+    ports:
+      - "8306:3306"
+
+  shopwaredemo-web:
+    build:
+      args:
+        APP_ENV: "dev"
+    environment:
+      - "PHP_IDE_CONFIG=${PHP_IDE_CONFIG}"
+    extra_hosts:
+      - host.docker.internal:host-gateway
